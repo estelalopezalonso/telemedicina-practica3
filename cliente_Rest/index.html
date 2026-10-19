@@ -1,0 +1,211 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Aplicación Gestor</title>
+  <style>
+    .seccion { display: none; }
+    .activa { display: block; }
+    table { border-collapse: collapse; width: 100%; }
+    td, th { border: 1px solid #ccc; padding: 6px; }
+    .fila-blanco { background: white; }
+    .fila-azul { background: #d9ecff; }
+    .fila-rojo { background: #ffd9d9; }
+    .fila-verde { background: #dfffe0; }
+    .toolbar { margin: 10px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+    .box { border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
+  </style>
+</head>
+
+<body>
+  <h1>Aplicación Gestor</h1>
+
+  <div id="login" class="seccion activa box">
+    <h2>Login gestor</h2>
+
+    <div>Usuario: <input id="usuarioLogin"></div>
+    <div>Contraseña: <input id="passwordLogin" type="password"></div>
+
+    <div class="toolbar">
+      <button onclick="entrar()">Entrar</button>
+      <button onclick="irRegistro()">Registrar</button>
+    </div>
+
+    <div id="msgLogin"></div>
+    <!--muestra posibles errores y vacia el contenido al probar un nuevo intento-->
+  </div>
+
+  <div id="registro" class="seccion box">
+    <h2 id="tituloRegistro">Registrar gestor</h2>
+
+    <div>Nombre: <input id="gNombre"></div>
+    <div>Apellidos: <input id="gApellidos"></div>
+    <div>Usuario: <input id="gUsuario"></div>
+    <div>Contraseña: <input id="gPassword" type="password"></div>
+
+    <div class="toolbar">
+      <button onclick="guardarGestor()">Guardar</button>
+      <button onclick="volverLogin()">Volver</button>
+    </div>
+
+    <div id="msgRegistro"></div>
+  </div>
+
+  <div id="menu-principal" class="seccion box">
+    <h2>Gestión de recursos</h2>
+
+    <div id="bienvenida"></div>
+
+    <div class="toolbar">
+      <button onclick="editarMisDatos()">Editar datos</button>
+      <button onclick="salir()">Salir</button>
+    </div>
+
+    <h3>Buscar recursos</h3>
+
+    <div class="toolbar">
+      <label>Categoría:
+        <select id="fCategoria" onchange="actualizarSelectModelos()"></select>
+      </label>
+
+      <label>Modelo:
+        <select id="fModelo"></select>
+      </label>
+
+      <label>Ubicación:
+        <select id="fUbicacion"></select>
+      </label>
+
+      <label>Estado:
+        <select id="fEstado">
+          <option value="-1">Todos</option>
+          <option value="0">Operativo</option>
+          <option value="1">Baja/Defectuoso</option>
+          <option value="2">Mantenimiento</option>
+        </select>
+      </label>
+
+      <button onclick="buscarRecursos()">Buscar</button>
+      <button onclick="nuevoRecurso()">Añadir recurso</button>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Número de serie</th>
+          <th>Categoría</th>
+          <th>Modelo</th>
+          <th>Ubicación</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="tablaRecursosBody"></tbody>
+    </table>
+
+
+<h3>Datos del Ministerio</h3>
+
+<button onclick="consultarMinisterio()">Consultar datos</button>
+<button onclick="prepararEnvioMinisterio()">Preparar envío</button>
+<button id="btnEnviarMinisterio" onclick="enviarMinisterio()">Enviar al Ministerio</button>
+
+<div id="msgMinisterio"></div>
+<div id="msgEnvioMinisterio"></div>
+
+
+<h3>Ranking de reservas por área médica</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Posición</th>
+      <th>Área médica</th>
+      <th>Número de reservas</th>
+    </tr>
+  </thead>
+  <tbody id="tablaRankingBody"></tbody>
+</table>
+
+
+<h3>Avisos</h3>
+<table>
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Origen</th>
+      <th>Texto</th>
+    </tr>
+  </thead>
+  <tbody id="tablaAvisosBody"></tbody>
+</table>
+</div>
+
+  <div id="ficha-recurso" class="seccion box">
+    <h2 id="tituloFicha">Ficha del recurso</h2>
+
+    <input type="hidden" id="recursoId">
+
+    <div>Categoría:
+      <select id="rCategoria" onchange="actualizarModelosFicha()"></select>
+    </div>
+
+    <div>Modelo:
+      <select id="rModelo"></select>
+    </div>
+
+    <div>Número de serie:
+      <input id="rNumeroSerie">
+    </div>
+
+    <div>Ubicación:
+      <select id="rUbicacion"></select>
+    </div>
+
+    <div>Estado:
+      <select id="rEstado">
+        <option value="0">Operativo</option>
+        <option value="1">Baja/Defectuoso</option>
+        <option value="2">Mantenimiento</option>
+      </select>
+    </div>
+
+    <div class="toolbar">
+      <button onclick="guardarRecurso()">Guardar</button>
+      <button onclick="volverListado()">Volver al listado</button>
+    </div>
+
+    <div id="msgFicha"></div>
+
+    <h3>Reservas</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Sanitario</th>
+          <th>Horas estimadas</th>
+          <th>Fecha petición</th>
+          <th>Fecha inicio</th>
+          <th>Fecha fin</th>
+        </tr>
+      </thead>
+      <tbody id="tablaReservasBody"></tbody>
+    </table>
+
+    <h3>Reseñas</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Sanitario</th>
+          <th>Valoración</th>
+          <th>Comentario</th>
+        </tr>
+      </thead>
+      <tbody id="tablaResenyasBody"></tbody>
+    </table>
+  </div>
+
+  <script src="rest.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
