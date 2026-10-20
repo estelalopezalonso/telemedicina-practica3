@@ -750,6 +750,9 @@ function formatearFecha(f) {
 // WebSocket del gestor
 function conectarWSGestor() {
   cerrarWS();
+  if (window.location.hostname === "telemedicina-practica3.onrender.com") {
+    return;
+  }
 
   ws = new WebSocket("ws://localhost:3000");
 
